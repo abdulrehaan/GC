@@ -208,9 +208,16 @@ if submit_button:
                 data = preprocess_inputs(product, description, audience, keywords)
                 prompt = create_prompt(data, tone, content_type)
                 raw_output = generate_content(prompt)
+<<<<<<< HEAD
+                if raw_output.startswith("Groq API error"):
+                    raise ValueError(raw_output)
+
+
+=======
                 if "failed" in raw_output.lower():
                     raise ValueError(raw_output)
 
+>>>>>>> 259735af47a4dd1ddfd0685fe05e84ceec63cc34
                 cleaned = clean_generated_text(raw_output)
                 final_output = apply_rules(cleaned, tone)
 
@@ -232,8 +239,13 @@ if submit_button:
                     </div>
                     """, unsafe_allow_html=True)
 
+<<<<<<< HEAD
+                    #st.markdown("#### 📋 Copy Text (ready to paste)")
+                    #st.code(final_output, language="markdown")
+=======
                     st.markdown("#### 📋 Copy Text (ready to paste)")
                     st.code(final_output, language="markdown")
+>>>>>>> 259735af47a4dd1ddfd0685fe05e84ceec63cc34
 
                 with col_image:
                     st.markdown("#### Product Visual")
