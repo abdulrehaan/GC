@@ -1,18 +1,21 @@
-import google.generativeai as genai
-from config import GEMINI_API_KEY
+from groq import Groq
+from config import GROQ_API_KEY
 
-# Configure API
-genai.configure(api_key=GEMINI_API_KEY)
-
-# Gemini 2.5 Flash model
-model = genai.GenerativeModel("models/gemini-2.5-flash")
+client = Groq(api_key=GROQ_API_KEY)
 
 def generate_content(prompt: str) -> str:
-    response = model.generate_content(
-        prompt,
-        generation_config={
-            "temperature": 0.7,
-            "max_output_tokens": 300
-        }
-    )
-    return response.text
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",  # Best balance: strong copywriting + fast
+            # Alternatives: "llama-3.1-8b-instant" (cheaper & faster), "gemma2-9b-it" (good creative)
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.75,
+            max_tokens=1536,
+            top_p=0.92,
+            stream=False
+        )
+        text = response.choices[0].message.content.strip()
+        print(f"DEBUG: Generated {len(text.split())} words")
+        return text
+    except Exception as e:
+        return f"Groq API error: {str(e)} – check key/quota or try again."

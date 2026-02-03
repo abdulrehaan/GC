@@ -1,46 +1,94 @@
 def create_prompt(data, tone, content_type):
+    # Few-shot example for Social Media Post (to guide "awestruck" style)
+    example_social = """
+   **Tired of gym commutes killing your motivation?** 😩🚗
+
+   Imagine crushing full-body workouts from your couch – anytime!  
+
+   Meet our **Resistance Band Set** – your portable power gym! 💪  
+
+   🔥 **Why it's a game-changer:**
+   - 5 bands up to **1040kg resistance** for progressive gains
+   - Non-slip handles + comfy ankle straps = zero hassle
+   - Door anchor for 50+ exercises anywhere
+   - Bonus carry bag & PDF guide to get started FAST  
+
+   Busy pros & home warriors: Ditch memberships, build strength on your terms. Results in weeks!  
+
+   **Grab yours now – limited stock!** 👉 [Link]  
+
+   #HomeWorkout #ResistanceBands #FitnessHack #NoGymNeeded #StrengthTraining
+   """
+
+    base_rules = f"""
+   WRITING RULES:
+   - Tone: {tone} – make it exciting, relatable, and urgent.
+   - Start with a **bold hook** (question or pain point, 1 line max).
+   - Short paragraphs (2–4 lines) + 3–6 emojis for visual pop.
+   - **Bold** product name & key phrases.
+   - Bullet features/benefits: 4–6 punchy lines with action words.
+   - Build desire: 1–2 sentences on transformation/social proof.
+   - End with **urgent CTA** (e.g. "Grab now – limited!").
+   - For Social Media: 120–220 words + 5–8 targeted hashtags.
+   - Output plain markdown only – no HTML, no extras.
+   - Make it scroll-stopping: persuasive, benefit-first, fun!
+
+   EXAMPLE FOR SOCIAL POST (follow this style exactly):
+   {example_social}
+   """
+
     if content_type == "Promotional Email":
         return f"""
-You are a professional email marketing specialist.
+   You are a conversion-obsessed email copywriter.
 
-Write a COMPLETE and ENGAGING promotional email.
+   Write a full promotional email.
 
-Product Name: {data['product']}
-Description: {data['description']}
-Target Audience: {data['audience']}
-SEO Keywords: {data['keywords']}
+   Product: {data['product']}
+   Description: {data['description']}
+   Audience: {data['audience']}
+   Keywords: {data['keywords']}
 
-MANDATORY EMAIL STRUCTURE:
-- Subject line
-- Greeting
-- Opening paragraph (problem + curiosity)
-- Product introduction
-- Key features (in bullet points)
-- Benefits for the reader
-- Strong call to action
-- Friendly closing and signature
+   STRUCTURE:
+   - Subject: [Catchy + urgent]
+   - Greeting
+   - Hook para
+   - Product intro
+   - Features bullets
+   - Benefits para
+   - CTA para
+   - Sign-off
 
-WRITING RULES:
-- Tone: {tone}
-- Minimum length: 200–250 words
-- Use short paragraphs for readability
-- Make the email visually engaging and persuasive
-- Do NOT stop after the introduction
-"""
+   {base_rules}
+   - 250–350 words, mobile-friendly.
+   """
+
+    elif content_type == "Social Media Post":
+        return f"""
+   You are a viral social media copywriter (Instagram/FB expert).
+
+   Create one killer post.
+
+   Product: {data['product']}
+   Description: {data['description']}
+   Audience: {data['audience']}
+   Keywords: {data['keywords']}
+
+   {base_rules}
+   - Match the example's energy: hook → excitement → bullets → desire → CTA → hashtags.
+   - Use keywords naturally for SEO.
+   """
+
     else:
         return f"""
-You are a professional marketing copywriter.
+   You are a pro copywriter.
 
-Generate a detailed and engaging {content_type}.
+   Generate engaging {content_type}.
 
-Product Name: {data['product']}
-Description: {data['description']}
-Target Audience: {data['audience']}
-SEO Keywords: {data['keywords']}
+   Product: {data['product']}
+   Description: {data['description']}
+   Audience: {data['audience']}
+   Keywords: {data['keywords']}
 
-WRITING RULES:
-- Tone: {tone}
-- Write multiple paragraphs
-- Clearly explain features and benefits
-- End with a strong call to action
-"""
+   {base_rules}
+   - Clear structure, benefit-focused.
+   """

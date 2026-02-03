@@ -19,16 +19,13 @@ def generate_product_image(product_name, description):
     for attempt in range(2):
         response = requests.post(API_URL, headers=HEADERS, json=payload)
 
-        # ✅ Success
         if response.status_code == 200:
             return Image.open(BytesIO(response.content))
 
-        # ⏳ Model loading (very common)
         if response.status_code == 503:
             time.sleep(15)  # wait for model to load
             continue
 
-        # ❌ Other errors
         break
 
     return None
